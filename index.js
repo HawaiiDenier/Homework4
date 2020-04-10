@@ -8,29 +8,19 @@ $(document).ready( function() {
     // Example to call the api using state_name
     // This should be done inside the for loop
     var stateTemps=[];
+    Object.keys(state_info).forEach(function(state_name,index) {
+           var state_obj = state_info[state_name];
+           var url =`https://api.weatherstack.com/forecast?access_key=5bc82451636190abd9d7afe6fe9b20b5&query=${state_obj.lat},${state_obj.lng}`;
+           		$.ajax({url:url, dataType:"jsonp"}).then(function(data) {
+                $(`#${state_name}`).css('fill', color);
+                console.log(state_name);
 
-    for (var key in state_info) {
-      var currKey='#'+key;
-      if (state_info.hasOwnProperty(key)) {
-        var lat=state_info[key].lat;
-        var long=state_info[key].lng;
-        var i=0;
-        var url='https://api.weatherstack.com/forecast?access_key=5bc82451636190abd9d7afe6fe9b20b5&query='+lat+","+long;
-        //console.log(key);
-        $.ajax({url:url, dataType:"jsonp"}).then( function(stat){
-        console.log(key);
-        stateTemps[i]=((stat.current.temperature)*(9/5))+32;
-        console.log(stateTemps[i]);
-        i=i+1;
-        });
+            })
+          })
 
-      }
-    }
 
-    //console.log("yo"+stateTemps[44]);
-    for(var j in stateTemps){
-      console.log("wat "+stateTemps[j]);
-    }
+
+
     if(stateTemps<10){
       $(currKey).css('fill', "#6495ED");
     }
